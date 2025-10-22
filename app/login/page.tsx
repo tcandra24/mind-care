@@ -1,43 +1,18 @@
-"use client";
-
-import { account } from "@/lib/appwrite";
-import { useState } from "react";
+import LoginForm from "@/components/login-form";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [id, setId] = useState("");
-
-  const handleSubmit = async (e: Event) => {
-    e.preventDefault();
-    try {
-      const user = await account.createEmailPasswordSession({
-        email,
-        password,
-      });
-
-      console.log(user);
-      setId(user.$id);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const logout = async () => {
-    const result = await account.deleteSession("current");
-    console.log(result);
-  };
-
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+    // <main>
+    //   <div>
+    //     <h1>Login</h1>
 
-        <button type="submit">Login</button>
-      </form>
-
-      <button onClick={logout}>Logout</button>
+    //     <LoginForm />
+    //   </div>
+    // </main>
+    <div className="bg-muted flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
+      <div className="w-full max-w-sm md:max-w-4xl">
+        <LoginForm />
+      </div>
     </div>
   );
 };
