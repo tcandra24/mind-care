@@ -1,8 +1,13 @@
-import { Client, Account, Databases } from "appwrite";
+import { Client, Account, Databases } from "node-appwrite";
 
-const client = new Client().setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!).setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID!);
+export function createAppwriteClient(sessionId?: string) {
+  const client = new Client().setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!).setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID!);
 
-const account = new Account(client);
-const databases = new Databases(client);
+  if (sessionId) {
+    client.setSession(sessionId);
+  } else {
+    client.setKey(process.env.NEXT_PUBLIC_APPWRITE_API_KEY!);
+  }
 
-export { client, account, databases };
+  return { client, account: new Account(client), databases: new Databases(client) };
+}

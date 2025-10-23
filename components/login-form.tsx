@@ -6,14 +6,15 @@ import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Field, FieldGroup, FieldSeparator } from "@/components/ui/field";
+import { Field, FieldGroup, FieldSeparator, FieldDescription } from "@/components/ui/field";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 
-import { account } from "@/lib/appwrite";
+// import { account } from "@/lib/appwrite";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { loginUser } from "@/lib/actions/auth.action";
 
 const formSchema = z.object({
   email: z.string().min(2).email().max(50),
@@ -30,7 +31,7 @@ const LoginForm = ({ className, ...props }: React.ComponentProps<"div">) => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const user = await account.createEmailPasswordSession({
+    await loginUser({
       email: values.email,
       password: values.password,
     });
@@ -104,6 +105,9 @@ const LoginForm = ({ className, ...props }: React.ComponentProps<"div">) => {
                     <span className="sr-only">Login with Meta</span>
                   </Button>
                 </Field>
+                <FieldDescription className="text-center">
+                  Don&apos;t have an account? <a href="#">Sign up</a>
+                </FieldDescription>
               </FieldGroup>
             </form>
           </Form>
