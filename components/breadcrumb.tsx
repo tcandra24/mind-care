@@ -8,17 +8,13 @@ const AppBreadcrumb = () => {
     <Breadcrumb>
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink asChild>
-            <p>Home</p>
-          </BreadcrumbLink>
+          <BreadcrumbLink asChild>Home</BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator>
           <SlashIcon />
         </BreadcrumbSeparator>
         <BreadcrumbItem>
-          <BreadcrumbLink asChild>
-            <p>Component</p>
-          </BreadcrumbLink>
+          <BreadcrumbLink asChild>Component</BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator>
           <SlashIcon />

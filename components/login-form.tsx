@@ -35,9 +35,7 @@ const LoginForm = ({ className, ...props }: React.ComponentProps<"div">) => {
       password: values.password,
     });
 
-    console.log(user);
-
-    redirect("/");
+    redirect("/dashboard");
   };
 
   return (
