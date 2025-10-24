@@ -4,14 +4,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { isValidPhoneNumber } from "react-phone-number-input";
 import { z } from "zod";
+import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Field, FieldGroup, FieldSeparator, FieldDescription } from "@/components/ui/field";
+import { FieldGroup, FieldDescription } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { PhoneInput } from "@/components/ui/phone-input";
 
-// import { account } from "@/lib/appwrite";
+import BannerImg from "@/public/placeholder.svg";
+
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import { useAuthStore } from "@/app/store/auth";
@@ -118,11 +120,14 @@ const RegisterForm = () => {
             <Button type="submit" disabled={loading ? true : false}>
               {loading ? "Loading..." : "Submit"}
             </Button>
+            <FieldDescription className="text-center">
+              Already have an account? <Link href={"/auth/sign-in"}>Sign in</Link>
+            </FieldDescription>
           </FieldGroup>
         </form>
       </Form>
       <div className="bg-muted relative hidden md:block">
-        <Image src={"hhttps://picsum.photos/300/300/?blur"} width={300} height={300} alt="Sign Up Page" className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale" />
+        <Image src={BannerImg} width={300} height={300} alt="Sign Up Page" className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale" />
       </div>
     </>
   );

@@ -10,6 +10,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Field, FieldGroup, FieldSeparator, FieldDescription } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 
+import BannerImg from "@/public/placeholder.svg";
+
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import { useAuthStore } from "@/app/store/auth";
@@ -114,7 +116,7 @@ const LoginForm = () => {
         </form>
       </Form>
       <div className="bg-muted relative hidden md:block">
-        <Image src={"hhttps://picsum.photos/300/300/?blur"} width={300} height={300} alt="Sign In Page" className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale" />
+        <Image src={BannerImg} width={300} height={300} alt="Sign In Page" className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale" />
       </div>
     </>
   );
