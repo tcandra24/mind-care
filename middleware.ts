@@ -5,7 +5,7 @@ export function middleware(req: NextRequest) {
   const session = req.cookies.get("appwrite-mind-care-session");
   const url = req.nextUrl.clone();
 
-  const publicPath = ["/auth/login", "/auth/register"];
+  const publicPath = ["/auth/sign-in", "/auth/sign-up"];
 
   if (publicPath.some((path) => url.pathname.startsWith(path))) {
     if (session) {
@@ -17,7 +17,7 @@ export function middleware(req: NextRequest) {
   }
 
   if (!session) {
-    url.pathname = "/auth/login";
+    url.pathname = "/auth/sign-in";
     return NextResponse.redirect(url);
   }
 

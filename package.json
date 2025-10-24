@@ -19,14 +19,19 @@
     "@radix-ui/react-tooltip": "^1.2.8",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "country-data-list": "^1.5.5",
+    "libphonenumber-js": "^1.12.24",
     "lucide-react": "^0.546.0",
     "next": "15.5.6",
     "node-appwrite": "^20.2.1",
     "react": "19.1.0",
+    "react-circle-flags": "^0.0.23",
     "react-dom": "19.1.0",
     "react-hook-form": "^7.65.0",
+    "react-phone-number-input": "^3.4.13",
     "tailwind-merge": "^3.3.1",
-    "zod": "^4.1.12"
+    "zod": "^4.1.12",
+    "zustand": "^5.0.8"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

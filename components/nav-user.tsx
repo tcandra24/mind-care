@@ -7,20 +7,21 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
 import { redirect } from "next/navigation";
-import { logoutUser } from "@/lib/actions/auth.action";
+import { useAuthStore } from "@/app/store/auth";
 
 export function NavUser({
   user,
 }: {
-  user?: {
+  user: {
     name: string;
     email: string;
-    avatar: string;
+    avatar?: string;
   };
 }) {
+  const { logout: logoutSession } = useAuthStore();
+
   const logout = async () => {
-    // await account.deleteSession("current");
-    await logoutUser();
+    await logoutSession();
 
     redirect("/login");
   };

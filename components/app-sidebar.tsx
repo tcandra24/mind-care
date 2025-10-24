@@ -6,7 +6,7 @@ import { NavMain } from "@/components/nav-main";
 import { NavUser } from "@/components/nav-user";
 import { Sidebar, SidebarContent, SidebarHeader, SidebarRail } from "@/components/ui/sidebar";
 import { useEffect, useState } from "react";
-import { getUser } from "@/lib/actions/auth.action";
+import { useAuthStore } from "@/app/store/auth";
 
 interface User {
   email: string;
@@ -16,11 +16,6 @@ interface User {
 
 // This is sample data.
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
   navMain: [
     {
       title: "Playground",
@@ -111,16 +106,7 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const [userSession, setUserSession] = useState<User | null>();
-  const getSession = async () => {
-    const user = await getUser();
-
-    setUserSession(user);
-  };
-
-  useEffect(() => {
-    getSession();
-  }, []);
+  const { user: userSession } = useAuthStore();
 
   return (
     <Sidebar collapsible="icon" {...props}>

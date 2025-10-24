@@ -5,8 +5,9 @@ import { ID } from "node-appwrite";
 import { cookies } from "next/headers";
 
 interface CreateUser {
-  name: string;
   email: string;
+  name: string;
+  phone: string;
   password: string;
 }
 
@@ -16,66 +17,79 @@ interface LoginUser {
 }
 
 export const registerUser = async (formData: CreateUser) => {
-  const { email, name, password } = formData;
+  try {
+    const { email, name, password } = formData;
 
-  const { account } = createAppwriteClient();
-  const user = await account.create({
-    userId: ID.unique(),
-    email,
-    name,
-    password,
-  });
+    const { account } = createAppwriteClient();
+    const user = await account.create({
+      userId: ID.unique(),
+      email,
+      name,
+      password,
+    });
 
-  console.log("Register : ", user);
-
-  return user;
+    return user;
+  } catch (error: any) {
+    return error.message;
+  }
 };
 
 export const loginUser = async (formData: LoginUser) => {
-  const { email, password } = formData;
+  try {
+    const { email, password } = formData;
 
-  const { account } = createAppwriteClient();
-  const session = await account.createEmailPasswordSession({
-    email,
-    password,
-  });
-  console.log("Login : ", session);
+    const { account } = createAppwriteClient();
+    const session = await account.createEmailPasswordSession({
+      email,
+      password,
+    });
 
-  const cookieStore = await cookies();
-  cookieStore.set("appwrite-mind-care-session", session.secret, {
-    httpOnly: true,
-    secure: true,
-    path: "/",
-    sameSite: "lax",
-  });
+    const cookieStore = await cookies();
+    cookieStore.set("appwrite-mind-care-session", session.secret, {
+      httpOnly: true,
+      secure: true,
+      path: "/",
+      sameSite: "lax",
+    });
 
-  return true;
+    return session;
+  } catch (error: any) {
+    return error.message;
+  }
 };
 
 export const logoutUser = async () => {
-  const cookieStore = await cookies();
-  const session = cookieStore.get("appwrite-mind-care-session")?.value ?? "";
+  try {
+    const cookieStore = await cookies();
+    const session = cookieStore.get("appwrite-mind-care-session")?.value ?? "";
 
-  const { account } = createAppwriteClient(session);
-  await account.deleteSession("current");
+    const { account } = createAppwriteClient(session);
+    await account.deleteSession("current");
 
-  cookieStore.set("appwrite-mind-care-session", "", {
-    maxAge: 0,
-    path: "/",
-  });
+    cookieStore.set("appwrite-mind-care-session", "", {
+      maxAge: 0,
+      path: "/",
+    });
+  } catch (error: any) {
+    return error.message;
+  }
 };
 
 export const getUser = async () => {
-  const cookieStore = await cookies();
-  const session = cookieStore.get("appwrite-mind-care-session")?.value ?? "";
+  try {
+    const cookieStore = await cookies();
+    const session = cookieStore.get("appwrite-mind-care-session")?.value ?? "";
 
-  if (!session) {
-    console.log("No session cookie found");
-    return null;
+    if (!session) {
+      console.log("No session cookie found");
+      return null;
+    }
+
+    const { account } = createAppwriteClient(session);
+    const user = await account.get();
+
+    return user;
+  } catch (error: any) {
+    return error.message;
   }
-
-  const { account } = createAppwriteClient(session);
-  const user = await account.get();
-
-  return user;
 };
