@@ -16,7 +16,7 @@ import BannerImg from "@/public/placeholder.svg";
 
 import { redirect } from "next/navigation";
 import Image from "next/image";
-import { useAuthStore } from "@/app/store/auth";
+import { useAuthStore } from "@/store/auth";
 
 const formSchema = z.object({
   email: z.string().min(2).email().max(50),

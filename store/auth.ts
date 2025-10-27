@@ -4,6 +4,7 @@ import { persist } from "zustand/middleware";
 import { loginUser, registerUser, getUser, logoutUser } from "@/lib/actions/auth.action";
 
 interface User {
+  id: string;
   email: string;
   name: string;
   phone: string;
@@ -24,6 +25,7 @@ export const useAuthStore = create(
       loading: false,
       error: null,
       user: {
+        id: "",
         email: "",
         name: "",
         phone: "",
@@ -42,6 +44,7 @@ export const useAuthStore = create(
 
             set({
               user: {
+                id: session?.$id ?? "",
                 email: session?.email ?? "",
                 name: session?.name ?? "",
                 phone: session?.phone ?? "",
@@ -62,6 +65,7 @@ export const useAuthStore = create(
 
           set({
             user: {
+              id: "",
               email: "",
               name: "",
               phone: "",

@@ -5,14 +5,7 @@ import { BookOpen, Bot, Settings2, SquareTerminal } from "lucide-react";
 import { NavMain } from "@/components/nav-main";
 import { NavUser } from "@/components/nav-user";
 import { Sidebar, SidebarContent, SidebarHeader, SidebarRail } from "@/components/ui/sidebar";
-import { useEffect, useState } from "react";
-import { useAuthStore } from "@/app/store/auth";
-
-interface User {
-  email: string;
-  name: string;
-  phone: string;
-}
+import { useAuthStore } from "@/store/auth";
 
 // This is sample data.
 const data = {
@@ -36,7 +29,7 @@ const data = {
       items: [
         {
           title: "Create",
-          url: "#",
+          url: "/moods",
         },
       ],
     },
