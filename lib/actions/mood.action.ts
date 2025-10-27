@@ -16,7 +16,7 @@ export const store = async (formData: CreateMood) => {
     const { databases } = createAppwriteClient();
 
     const ai = new GoogleGenAI({
-      apiKey: "AIzaSyA09fIr__XWXTPTQSR0lSqYINAqIBD5NbA",
+      apiKey: process.env.NEXT_GOOGLE_GEMINI_API_KEY,
     });
 
     const prompt = `
