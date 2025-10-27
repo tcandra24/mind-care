@@ -1,8 +1,14 @@
+"use client";
+
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 import Link from "next/link";
+
+import { useAuthStore } from "@/store/auth";
+import { useMoodStore } from "@/store/mood";
+import { useEffect } from "react";
 
 const invoices = [
   {
@@ -50,6 +56,19 @@ const invoices = [
 ];
 
 export default function Moods() {
+  const { user } = useAuthStore();
+  const { getData: getAllData } = useMoodStore();
+
+  const getData = async (id: string) => {
+    const response = await getAllData(id);
+
+    console.log(response);
+  };
+
+  useEffect(() => {
+    getData(user.id);
+  }, []);
+
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
       <Card className="w-full">

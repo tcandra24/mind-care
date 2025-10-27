@@ -12,6 +12,7 @@ import { FieldGroup } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
 
 import { useAuthStore } from "@/store/auth";
+import { useMoodStore } from "@/store/mood";
 
 const formSchema = z.object({
   mood: z.string().min(1),
@@ -20,6 +21,7 @@ const formSchema = z.object({
 
 export default function CreateMood() {
   const { user } = useAuthStore();
+  const { loading, store } = useMoodStore();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -30,16 +32,25 @@ export default function CreateMood() {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const response = await fetch("/api/tip", {
-      method: "POST",
-      body: JSON.stringify({
-        mood: values.mood,
-        note: values.note,
-        user_id: user.id,
-      }),
+    const response = await store({
+      mood: values.mood,
+      note: values.note,
+      user_id: user.id,
     });
-    const data = await response.json();
-    console.log(data);
+
+    console.log(response);
+    // const response = await fetch("/api/tip", {
+    //   method: "POST",
+    //   body: JSON.stringify({
+    //     mood: values.mood,
+    //     note: values.note,
+    //     user_id: user.id,
+    //   }),
+    // });
+    // const data = await response.json();
+    // console.log(data);
+
+    form.reset();
   };
 
   return (

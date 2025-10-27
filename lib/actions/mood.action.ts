@@ -10,6 +10,30 @@ interface CreateMood {
   user_id: string;
 }
 
+export const fetch = async (userId: string) => {
+  try {
+    const { databases, query } = createAppwriteClient();
+    console.log(userId);
+
+    const moods = await databases.listDocuments(process.env.NEXT_APPWRITE_DB_ID!, "moods", [query.equal("user_id", userId)]);
+
+    const moodWithRelation = await Promise.all(
+      moods.documents.map(async (mood) => {
+        const tip = await databases.listDocuments(process.env.NEXT_APPWRITE_DB_ID!, "tips", [query.equal("tip_id", mood.tip_id)]);
+
+        return {
+          mood,
+          tip,
+        };
+      })
+    );
+
+    return moodWithRelation;
+  } catch (error: any) {
+    return error.message;
+  }
+};
+
 export const store = async (formData: CreateMood) => {
   try {
     const { mood, note, user_id } = formData;
@@ -36,13 +60,13 @@ export const store = async (formData: CreateMood) => {
 
     const tip = response?.candidates?.[0]?.content?.parts?.[0]?.text || "No response generated.";
 
-    const savedTip = await databases.createDocument("68f37cb90011648a454b", "tips", ID.unique(), {
+    const savedTip = await databases.createDocument(process.env.NEXT_APPWRITE_DB_ID!, "tips", ID.unique(), {
       mood,
       tip,
       source: "ai",
     });
 
-    const saveMood = await databases.createDocument("68f37cb90011648a454b", "moods", ID.unique(), {
+    const saveMood = await databases.createDocument(process.env.NEXT_APPWRITE_DB_ID!, "moods", ID.unique(), {
       mood,
       note,
       tip_id: savedTip.$id,
