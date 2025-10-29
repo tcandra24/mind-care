@@ -8,38 +8,34 @@ import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 
 import { useAuthStore } from "@/store/auth";
-import { useMoodStore } from "@/store/mood";
-import { useEffect, useState } from "react";
+import { useMemoStore } from "@/store/memo";
+import { useEffect } from "react";
 
 export default function Moods() {
   const { user } = useAuthStore();
-  const { getData: getAllData } = useMoodStore();
-
-  const [moods, setMoods] = useState([]);
+  const { getData: getAllData, loading, memos } = useMemoStore();
 
   const getData = async (id: string) => {
-    const response = await getAllData(id);
-
-    setMoods(response.response);
+    await getAllData(id);
   };
 
   useEffect(() => {
-    getData(user.id);
-  }, []);
+    if (user?.id) getData(user.id);
+  }, [user.id]);
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
       <Card className="w-full">
         <CardHeader>
-          <CardTitle>List of Moods</CardTitle>
-          <CardDescription>Moods</CardDescription>
+          <CardTitle>Memos</CardTitle>
+          <CardDescription>List of What You Think Early</CardDescription>
           <CardAction>
             <Link href={"/moods/create"}>
               <Button variant="default">Create</Button>
             </Link>
           </CardAction>
         </CardHeader>
-        <CardContent>
+        {/* <CardContent>
           <Table>
             <TableCaption>A list of your recent Moods.</TableCaption>
             <TableHeader>
@@ -51,24 +47,24 @@ export default function Moods() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {moods &&
-                moods.map((mood) => (
-                  <TableRow key={mood["$id"]}>
+              {!loading &&
+                memos.map((memo) => (
+                  <TableRow key={memo["$id"]}>
                     <TableCell className="font-medium">
-                      <Badge variant="default">{mood.mood}</Badge>
+                      <Badge variant="default">{memo.mood}</Badge>
                     </TableCell>
                     <TableCell>
-                      <p className="text-wrap">{mood.note}</p>
+                      <p className="text-wrap">{memo.note}</p>
                     </TableCell>
                     <TableCell className="text-wrap">
-                      <p className="text-wrap">{mood.tip.tip}</p>
+                      <p className="text-wrap">{memo.tip_ai}</p>
                     </TableCell>
-                    <TableCell className="text-right">{mood["$createdAt"]}</TableCell>
+                    <TableCell className="text-right">{memo["$createdAt"]}</TableCell>
                   </TableRow>
                 ))}
             </TableBody>
           </Table>
-        </CardContent>
+        </CardContent> */}
       </Card>
     </div>
   );

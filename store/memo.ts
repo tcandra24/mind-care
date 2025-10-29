@@ -1,33 +1,38 @@
 import { create } from "zustand";
 
-interface Mood {
-  id: string;
+interface Memo {
+  $id: string;
   mood: string;
   note: string;
-  tip: string;
+  tip_ai: string;
+  source: string;
+  user_id: string;
+  $createdAt: string;
 }
 
-interface MoodState {
+interface MemoState {
   loading: boolean;
-  moods: Mood[];
+  memos: Memo[];
   getData: (userId: string) => Promise<void>;
   store: (payload: { mood: string; note: string; user_id: string }) => Promise<void>;
 }
 
-export const useMoodStore = create<MoodState>((set) => ({
+export const useMemoStore = create<MemoState>((set) => ({
   loading: false,
-  moods: [],
+  memos: [],
   getData: async (userId) => {
-    set({ loading: true });
+    set({ loading: true, memos: [] });
     try {
       const response = await fetch(`/api/tip?user_id=${userId}`, {
         method: "GET",
       });
       const data = await response.json();
 
-      set({ loading: false });
+      if (!data.success) {
+        throw new Error("Throw Error");
+      }
 
-      return data;
+      set({ loading: false, memos: data.response });
     } catch (error: any) {
       return error.message;
     }
@@ -43,11 +48,10 @@ export const useMoodStore = create<MoodState>((set) => ({
           user_id,
         }),
       });
-      const data = await response.json();
+
+      await response.json();
 
       set({ loading: false });
-
-      return data;
     } catch (error: any) {
       return error.message;
     }

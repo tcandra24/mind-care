@@ -14,20 +14,9 @@ export const fetch = async (userId: string) => {
   try {
     const { databases, query } = createAppwriteClient();
 
-    const moods = await databases.listDocuments(process.env.NEXT_APPWRITE_DB_ID!, "moods", [query.equal("user_id", userId)]);
+    const memos = await databases.listDocuments(process.env.NEXT_APPWRITE_DB_ID!, "memos", [query.equal("user_id", userId)]);
 
-    const moodWithRelation = await Promise.all(
-      moods.documents.map(async (mood) => {
-        const tip = await databases.getDocument(process.env.NEXT_APPWRITE_DB_ID!, "tips", mood.tip_id);
-
-        return {
-          ...mood,
-          tip,
-        };
-      })
-    );
-
-    return moodWithRelation;
+    return memos.documents;
   } catch (error: any) {
     return error.message;
   }
@@ -59,20 +48,15 @@ export const store = async (formData: CreateMood) => {
 
     const tip = response?.candidates?.[0]?.content?.parts?.[0]?.text || "No response generated.";
 
-    const savedTip = await databases.createDocument(process.env.NEXT_APPWRITE_DB_ID!, "tips", ID.unique(), {
-      mood,
-      tip,
-      source: "ai",
-    });
-
-    const saveMood = await databases.createDocument(process.env.NEXT_APPWRITE_DB_ID!, "moods", ID.unique(), {
+    const saveMemo = await databases.createDocument(process.env.NEXT_APPWRITE_DB_ID!, "memos", ID.unique(), {
       mood,
       note,
-      tip_id: savedTip.$id,
+      tip_ai: tip,
+      source: "gemini",
       user_id,
     });
 
-    return saveMood;
+    return saveMemo;
   } catch (error: any) {
     return error.message;
   }

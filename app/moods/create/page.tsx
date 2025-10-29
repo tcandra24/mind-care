@@ -12,7 +12,7 @@ import { FieldGroup } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
 
 import { useAuthStore } from "@/store/auth";
-import { useMoodStore } from "@/store/mood";
+import { useMemoStore } from "@/store/memo";
 import { redirect } from "next/navigation";
 
 const formSchema = z.object({
@@ -22,7 +22,7 @@ const formSchema = z.object({
 
 export default function CreateMood() {
   const { user } = useAuthStore();
-  const { loading, store } = useMoodStore();
+  const { loading, store } = useMemoStore();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -49,7 +49,7 @@ export default function CreateMood() {
       <Card className="w-full max-w-2xl">
         <CardHeader>
           <CardTitle>Create of Moods</CardTitle>
-          <CardDescription>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur, fuga? Ea sunt molestias in, sed quod sapiente minus deleniti laborum.</CardDescription>
+          <CardDescription>How do you feels today</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>

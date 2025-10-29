@@ -1,6 +1,6 @@
 "use client";
 
-import { BookOpen, Bot, Settings2, SquareTerminal } from "lucide-react";
+import { BookOpen, Home, Settings2, RouteIcon } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
 import { NavUser } from "@/components/nav-user";
@@ -13,22 +13,22 @@ const data = {
     {
       title: "Dashboard",
       url: "#",
-      icon: SquareTerminal,
+      icon: Home,
       isActive: true,
       items: [
         {
-          title: "Moods",
+          title: "Your Journey",
           url: "#",
         },
       ],
     },
     {
-      title: "Moods",
+      title: "Moods Tracker",
       url: "#",
-      icon: Bot,
+      icon: RouteIcon,
       items: [
         {
-          title: "Create",
+          title: "Memo",
           url: "/moods",
         },
       ],

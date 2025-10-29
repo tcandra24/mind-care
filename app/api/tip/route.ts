@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
-import { fetch, store } from "@/lib/actions/mood.action";
+import { fetch, store } from "@/lib/actions/memo.action";
 
 export async function GET(req: NextRequest) {
   try {
@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      response,
+      response: response,
     });
   } catch (error: any) {
     return NextResponse.json(
