@@ -13,16 +13,15 @@ interface CreateMood {
 export const fetch = async (userId: string) => {
   try {
     const { databases, query } = createAppwriteClient();
-    console.log(userId);
 
     const moods = await databases.listDocuments(process.env.NEXT_APPWRITE_DB_ID!, "moods", [query.equal("user_id", userId)]);
 
     const moodWithRelation = await Promise.all(
       moods.documents.map(async (mood) => {
-        const tip = await databases.listDocuments(process.env.NEXT_APPWRITE_DB_ID!, "tips", [query.equal("tip_id", mood.tip_id)]);
+        const tip = await databases.getDocument(process.env.NEXT_APPWRITE_DB_ID!, "tips", mood.tip_id);
 
         return {
-          mood,
+          ...mood,
           tip,
         };
       })

@@ -18,14 +18,14 @@ export const useMoodStore = create<MoodState>((set) => ({
   loading: false,
   moods: [],
   getData: async (userId) => {
+    set({ loading: true });
     try {
-      const response = await fetch("/api/tip", {
+      const response = await fetch(`/api/tip?user_id=${userId}`, {
         method: "GET",
-        body: JSON.stringify({
-          user_id: userId,
-        }),
       });
       const data = await response.json();
+
+      set({ loading: false });
 
       return data;
     } catch (error: any) {
@@ -33,6 +33,7 @@ export const useMoodStore = create<MoodState>((set) => ({
     }
   },
   store: async ({ mood, note, user_id }) => {
+    set({ loading: true });
     try {
       const response = await fetch("/api/tip", {
         method: "POST",
@@ -43,6 +44,8 @@ export const useMoodStore = create<MoodState>((set) => ({
         }),
       });
       const data = await response.json();
+
+      set({ loading: false });
 
       return data;
     } catch (error: any) {

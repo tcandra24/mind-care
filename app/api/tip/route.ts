@@ -1,11 +1,11 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { fetch, store } from "@/lib/actions/mood.action";
 
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   try {
-    const { user_id } = await req.json();
-
-    const response = await fetch(user_id);
+    const { searchParams } = new URL(req.url);
+    const user_id = searchParams.get("user_id");
+    const response = await fetch(user_id as string);
 
     return NextResponse.json({
       success: true,

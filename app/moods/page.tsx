@@ -3,66 +3,24 @@
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 import Link from "next/link";
 
 import { useAuthStore } from "@/store/auth";
 import { useMoodStore } from "@/store/mood";
-import { useEffect } from "react";
-
-const invoices = [
-  {
-    invoice: "INV001",
-    paymentStatus: "Paid",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV002",
-    paymentStatus: "Pending",
-    totalAmount: "$150.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV003",
-    paymentStatus: "Unpaid",
-    totalAmount: "$350.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV004",
-    paymentStatus: "Paid",
-    totalAmount: "$450.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV005",
-    paymentStatus: "Paid",
-    totalAmount: "$550.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV006",
-    paymentStatus: "Pending",
-    totalAmount: "$200.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV007",
-    paymentStatus: "Unpaid",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
-  },
-];
+import { useEffect, useState } from "react";
 
 export default function Moods() {
   const { user } = useAuthStore();
   const { getData: getAllData } = useMoodStore();
 
+  const [moods, setMoods] = useState([]);
+
   const getData = async (id: string) => {
     const response = await getAllData(id);
 
-    console.log(response);
+    setMoods(response.response);
   };
 
   useEffect(() => {
@@ -83,31 +41,32 @@ export default function Moods() {
         </CardHeader>
         <CardContent>
           <Table>
-            <TableCaption>A list of your recent invoices.</TableCaption>
+            <TableCaption>A list of your recent Moods.</TableCaption>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[100px]">Invoice</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Method</TableHead>
-                <TableHead className="text-right">Amount</TableHead>
+                <TableHead className="w-[100px]">Mood</TableHead>
+                <TableHead>Note</TableHead>
+                <TableHead>Tip</TableHead>
+                <TableHead className="text-right">Created At</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {invoices.map((invoice) => (
-                <TableRow key={invoice.invoice}>
-                  <TableCell className="font-medium">{invoice.invoice}</TableCell>
-                  <TableCell>{invoice.paymentStatus}</TableCell>
-                  <TableCell>{invoice.paymentMethod}</TableCell>
-                  <TableCell className="text-right">{invoice.totalAmount}</TableCell>
-                </TableRow>
-              ))}
+              {moods &&
+                moods.map((mood) => (
+                  <TableRow key={mood["$id"]}>
+                    <TableCell className="font-medium">
+                      <Badge variant="default">{mood.mood}</Badge>
+                    </TableCell>
+                    <TableCell>
+                      <p className="text-wrap">{mood.note}</p>
+                    </TableCell>
+                    <TableCell className="text-wrap">
+                      <p className="text-wrap">{mood.tip.tip}</p>
+                    </TableCell>
+                    <TableCell className="text-right">{mood["$createdAt"]}</TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
-            <TableFooter>
-              <TableRow>
-                <TableCell colSpan={3}>Total</TableCell>
-                <TableCell className="text-right">$2,500.00</TableCell>
-              </TableRow>
-            </TableFooter>
           </Table>
         </CardContent>
       </Card>

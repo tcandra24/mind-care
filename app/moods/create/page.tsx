@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 
 import { useAuthStore } from "@/store/auth";
 import { useMoodStore } from "@/store/mood";
+import { redirect } from "next/navigation";
 
 const formSchema = z.object({
   mood: z.string().min(1),
@@ -32,25 +33,15 @@ export default function CreateMood() {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const response = await store({
+    await store({
       mood: values.mood,
       note: values.note,
       user_id: user.id,
     });
 
-    console.log(response);
-    // const response = await fetch("/api/tip", {
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     mood: values.mood,
-    //     note: values.note,
-    //     user_id: user.id,
-    //   }),
-    // });
-    // const data = await response.json();
-    // console.log(data);
-
     form.reset();
+
+    redirect("/moods");
   };
 
   return (
@@ -103,7 +94,9 @@ export default function CreateMood() {
                   )}
                 />
 
-                <Button type="submit">Submit</Button>
+                <Button type="submit" disabled={loading ? true : false}>
+                  {loading ? "Loading..." : "Submit"}
+                </Button>
               </FieldGroup>
             </form>
           </Form>
