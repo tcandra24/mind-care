@@ -1,6 +1,6 @@
 "use client";
 
-import { BookOpen, Home, Settings2, RouteIcon } from "lucide-react";
+import { Home, Settings2, RouteIcon } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
 import { NavUser } from "@/components/nav-user";
