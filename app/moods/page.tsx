@@ -2,9 +2,10 @@
 
 import { Bot } from "lucide-react";
 
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Spinner } from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
@@ -13,7 +14,7 @@ import Link from "next/link";
 import { useAuthStore } from "@/store/auth";
 import { useMemoStore } from "@/store/memo";
 import { useEffect, useState } from "react";
-import { getMoodColor } from "@/lib/utils";
+import { getMoodColor, ucwords } from "@/lib/utils";
 
 export default function Moods() {
   const { user } = useAuthStore();
@@ -53,7 +54,7 @@ export default function Moods() {
     <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
       <Card className="w-full">
         <CardHeader>
-          <CardTitle>Memos</CardTitle>
+          <CardTitle>Memos1</CardTitle>
           <CardDescription>List of What You Think Early</CardDescription>
           <CardAction>
             <Link href={"/moods/create"}>
@@ -62,6 +63,11 @@ export default function Moods() {
           </CardAction>
         </CardHeader>
       </Card>
+      {loading && (
+        <div className="w-full">
+          <Spinner className="size-8 mx-auto my-8" />
+        </div>
+      )}
       <div className="w-full grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 gap-4">
         {!loading &&
           memos.map((memo) => (
@@ -78,7 +84,7 @@ export default function Moods() {
               <CardContent>
                 <div className="flex flex-col gap-2">
                   <Badge variant="secondary" className="bg-gray-100">
-                    {memo.mood}
+                    {ucwords(memo.mood)}
                   </Badge>
                   <div>
                     <p className="text-sm font-bold">{dateFormat.format(new Date(memo["$createdAt"]))}</p>
@@ -96,9 +102,9 @@ export default function Moods() {
               <SheetTitle>
                 <Bot /> AI Answer
               </SheetTitle>
-              <SheetDescription className="text-justify text-lg">
-                <ScrollArea className="h-[600px] italic">{sheetData ?? "AI Answer will appear here."}</ScrollArea>
-              </SheetDescription>
+              <ScrollArea className="h-[600px] italic">
+                <SheetDescription className="text-justify text-lg">{sheetData ?? "AI Answer will appear here."}</SheetDescription>
+              </ScrollArea>
             </SheetHeader>
           </SheetContent>
         </Sheet>

@@ -12,7 +12,7 @@ import { FieldGroup, FieldDescription } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { PhoneInput } from "@/components/ui/phone-input";
 
-import BannerImg from "@/public/placeholder.svg";
+import BannerImg from "@/public/banner.svg";
 
 import { redirect } from "next/navigation";
 import Image from "next/image";
@@ -56,7 +56,7 @@ const RegisterForm = () => {
           <FieldGroup>
             <div className="flex flex-col items-center gap-2 text-center">
               <h1 className="text-2xl font-bold">Get ready to join community</h1>
-              <p className="text-muted-foreground text-balance">Register to your Acme Inc account</p>
+              <p className="text-muted-foreground text-balance">Register to your Mind Care account</p>
             </div>
             <FormField
               control={form.control}
@@ -126,8 +126,8 @@ const RegisterForm = () => {
           </FieldGroup>
         </form>
       </Form>
-      <div className="bg-muted relative hidden md:block">
-        <Image src={BannerImg} width={300} height={300} alt="Sign Up Page" className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale" />
+      <div className="bg-muted hidden md:block">
+        <Image src={BannerImg} width={300} height={300} alt="Sign Up Page" className="w-full mt-16 p-3 object-cover dark:brightness-[0.2] dark:grayscale" />
       </div>
     </>
   );

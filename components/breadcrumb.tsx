@@ -3,30 +3,33 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
+import { ucwords } from "@/lib/utils";
 
 const AppBreadcrumb = () => {
   const pathname = usePathname();
   const [paths, setPaths] = useState<string[]>([]);
-  console.log(paths);
+
   useEffect(() => {
     const arrayPaths = pathname.split("/");
-    setPaths(arrayPaths.filter((item) => item !== ""));
+    setPaths(arrayPaths.filter(Boolean));
   }, [pathname]);
   return (
     <Breadcrumb>
       <BreadcrumbList>
         <BreadcrumbItem className="hidden md:block">
-          <BreadcrumbLink href="#">Dashboard</BreadcrumbLink>
+          <BreadcrumbLink asChild>
+            <Link href={"/dashboard"}>Home</Link>
+          </BreadcrumbLink>
         </BreadcrumbItem>
         {paths &&
-          paths.map((path) => (
-            <>
+          paths.map((path, index) => (
+            <Fragment key={index}>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
-                <BreadcrumbPage>{path}</BreadcrumbPage>
+                <BreadcrumbPage>{ucwords(path)}</BreadcrumbPage>
               </BreadcrumbItem>
-            </>
+            </Fragment>
           ))}
       </BreadcrumbList>
     </Breadcrumb>
