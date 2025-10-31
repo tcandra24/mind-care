@@ -72,9 +72,6 @@ const LoginForm = () => {
                 <FormItem>
                   <div className="flex items-center">
                     <FormLabel>Password</FormLabel>
-                    <a href="#" className="ml-auto text-sm underline-offset-2 hover:underline">
-                      Forgot your password?
-                    </a>
                   </div>
 
                   <FormControl>
@@ -88,7 +85,7 @@ const LoginForm = () => {
             <Button type="submit" disabled={loading ? true : false}>
               {loading ? "Loading..." : "Submit"}
             </Button>
-            <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">Or continue with</FieldSeparator>
+            {/* <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">Or continue with</FieldSeparator>
             <Field className="grid grid-cols-3 gap-4 justify-center">
               <Button variant="outline" type="button">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -117,7 +114,7 @@ const LoginForm = () => {
                 </svg>
                 <span className="sr-only">Login with Facebook</span>
               </Button>
-            </Field>
+            </Field> */}
             <FieldDescription className="text-center">
               Don&apos;t have an account? <Link href={"/auth/sign-up"}>Sign up</Link>
             </FieldDescription>

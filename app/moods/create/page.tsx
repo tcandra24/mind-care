@@ -25,6 +25,7 @@ import neutral from "@/constant/neutral.json";
 import sad from "@/constant/sad.json";
 
 import { quotes } from "@/constant";
+import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
   mood: z.string().min(1),
@@ -63,6 +64,10 @@ export default function CreateMood() {
     redirect("/moods");
   };
 
+  const handleSelectMoodChange = (value: string) => {
+    form.setValue("mood", value);
+  };
+
   useEffect(() => {
     setLetter(quotes[Math.floor(Math.random() * quotes.length)].text);
   }, []);
@@ -76,14 +81,6 @@ export default function CreateMood() {
             <CardDescription>How do you feels today</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="w-full flex gap-7">
-              <Lottie lottieRef={iconAngryRef} animationData={angry} autoplay={false} onMouseEnter={() => iconAngryRef.current?.play()} onMouseLeave={() => iconAngryRef.current?.stop()}></Lottie>
-              <Lottie lottieRef={iconAnxiousRef} animationData={anxious} autoplay={false} onMouseEnter={() => iconAnxiousRef.current?.play()} onMouseLeave={() => iconAnxiousRef.current?.stop()}></Lottie>
-              <Lottie lottieRef={iconExcitedRef} animationData={excited} autoplay={false} onMouseEnter={() => iconExcitedRef.current?.play()} onMouseLeave={() => iconExcitedRef.current?.stop()}></Lottie>
-              <Lottie lottieRef={iconHappyRef} animationData={happy} autoplay={false} onMouseEnter={() => iconHappyRef.current?.play()} onMouseLeave={() => iconHappyRef.current?.stop()}></Lottie>
-              <Lottie lottieRef={iconNeutralRef} animationData={neutral} autoplay={false} onMouseEnter={() => iconNeutralRef.current?.play()} onMouseLeave={() => iconNeutralRef.current?.stop()}></Lottie>
-              <Lottie lottieRef={iconSadRef} animationData={sad} autoplay={false} onMouseEnter={() => iconSadRef.current?.play()} onMouseLeave={() => iconSadRef.current?.stop()}></Lottie>
-            </div>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="p-6 md:p-8">
                 <FieldGroup>
@@ -93,10 +90,89 @@ export default function CreateMood() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Mood</FormLabel>
+                        <div className="w-full flex flex-wrap gap-7">
+                          <div className="flex flex-col gap-1">
+                            <Lottie
+                              onClick={() => handleSelectMoodChange("angry")}
+                              className={cn(`${form.getValues("mood") === "angry" ? "rounded-full shadow-md" : ""}`, "w-20")}
+                              lottieRef={iconAngryRef}
+                              animationData={angry}
+                              autoplay={false}
+                              onMouseEnter={() => iconAngryRef.current?.play()}
+                              onMouseLeave={() => iconAngryRef.current?.stop()}
+                            ></Lottie>
+                            <p className="text-sm text-center font-bold">Angry</p>
+                          </div>
+
+                          <div className="flex flex-col gap-1">
+                            <Lottie
+                              onClick={() => handleSelectMoodChange("anxious")}
+                              className={cn(`${form.getValues("mood") === "anxious" ? "rounded-full shadow-md" : ""}`, "w-20")}
+                              lottieRef={iconAnxiousRef}
+                              animationData={anxious}
+                              autoplay={false}
+                              onMouseEnter={() => iconAnxiousRef.current?.play()}
+                              onMouseLeave={() => iconAnxiousRef.current?.stop()}
+                            ></Lottie>
+                            <p className="text-sm text-center font-bold">Anxious</p>
+                          </div>
+
+                          <div className="flex flex-col gap-1">
+                            <Lottie
+                              onClick={() => handleSelectMoodChange("excited")}
+                              className={cn(`${form.getValues("mood") === "excited" ? "rounded-full shadow-md" : ""}`, "w-20")}
+                              lottieRef={iconExcitedRef}
+                              animationData={excited}
+                              autoplay={false}
+                              onMouseEnter={() => iconExcitedRef.current?.play()}
+                              onMouseLeave={() => iconExcitedRef.current?.stop()}
+                            ></Lottie>
+                            <p className="text-sm text-center font-bold">Excited</p>
+                          </div>
+
+                          <div className="flex flex-col gap-1">
+                            <Lottie
+                              onClick={() => handleSelectMoodChange("happy")}
+                              className={cn(`${form.getValues("mood") === "happy" ? "rounded-full shadow-md" : ""}`, "w-20")}
+                              lottieRef={iconHappyRef}
+                              animationData={happy}
+                              autoplay={false}
+                              onMouseEnter={() => iconHappyRef.current?.play()}
+                              onMouseLeave={() => iconHappyRef.current?.stop()}
+                            ></Lottie>
+                            <p className="text-sm text-center font-bold">Happy</p>
+                          </div>
+
+                          <div className="flex flex-col gap-1">
+                            <Lottie
+                              onClick={() => handleSelectMoodChange("neutral")}
+                              className={cn(`${form.getValues("mood") === "neutral" ? "rounded-full shadow-md" : ""}`, "w-20")}
+                              lottieRef={iconNeutralRef}
+                              animationData={neutral}
+                              autoplay={false}
+                              onMouseEnter={() => iconNeutralRef.current?.play()}
+                              onMouseLeave={() => iconNeutralRef.current?.stop()}
+                            ></Lottie>
+                            <p className="text-sm text-center font-bold">Neutral</p>
+                          </div>
+
+                          <div className="flex flex-col gap-1">
+                            <Lottie
+                              onClick={() => handleSelectMoodChange("sad")}
+                              className={cn(`${form.getValues("mood") === "sad" ? "rounded-full shadow-md" : ""}`, "w-20")}
+                              lottieRef={iconSadRef}
+                              animationData={sad}
+                              autoplay={false}
+                              onMouseEnter={() => iconSadRef.current?.play()}
+                              onMouseLeave={() => iconSadRef.current?.stop()}
+                            ></Lottie>
+                            <p className="text-sm text-center font-bold">Sad</p>
+                          </div>
+                        </div>
                         <FormControl>
                           <Select onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
-                            <SelectTrigger className="w-[200px]">
-                              <SelectValue placeholder="Enter Mood" />
+                            <SelectTrigger className="hidden">
+                              <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
                               <SelectItem value="happy">Happy</SelectItem>

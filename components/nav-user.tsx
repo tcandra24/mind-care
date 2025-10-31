@@ -24,7 +24,7 @@ export function NavUser({
   const logout = async () => {
     await logoutSession();
 
-    redirect("/login");
+    redirect("/auth/sign-in");
   };
 
   const { isMobile } = useSidebar();

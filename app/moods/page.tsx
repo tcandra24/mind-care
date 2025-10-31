@@ -37,10 +37,6 @@ export default function Moods() {
     minute: "2-digit",
   });
 
-  const titleFormat = (datetime: string) => {
-    return `${new Date(datetime).getDay()}/${new Date(datetime).getMonth()}/${new Date(datetime).getFullYear()}`;
-  };
-
   const handleOpenSheet = (tip_ai: string) => {
     setSheetData(tip_ai);
     setIsOpen(true);
@@ -54,7 +50,7 @@ export default function Moods() {
     <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
       <Card className="w-full">
         <CardHeader>
-          <CardTitle>Memos1</CardTitle>
+          <CardTitle>Memos</CardTitle>
           <CardDescription>List of What You Think Early</CardDescription>
           <CardAction>
             <Link href={"/moods/create"}>
@@ -70,10 +66,10 @@ export default function Moods() {
       )}
       <div className="w-full grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 gap-4">
         {!loading &&
-          memos.map((memo) => (
+          memos.map((memo, index) => (
             <Card key={memo.$id} style={{ backgroundColor: getMoodColor(memo.mood) }}>
               <CardHeader>
-                <CardTitle className="font-bold">{titleFormat(memo["$createdAt"])}</CardTitle>
+                <CardTitle className="font-bold">{`Memo-${index + 1}`}</CardTitle>
                 <CardAction>
                   <Button variant="secondary" onClick={() => handleOpenSheet(memo.tip_ai)}>
                     <Bot />
