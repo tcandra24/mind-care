@@ -6,7 +6,7 @@ import ChangePasswordForm from "@/components/change-password";
 const Setting = () => {
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-      <Tabs className="w-3/4" defaultValue="account">
+      <Tabs className="lg:w-1/2 w-full" defaultValue="account">
         <TabsList>
           <TabsTrigger value="account">Account</TabsTrigger>
           <TabsTrigger value="password">Password</TabsTrigger>

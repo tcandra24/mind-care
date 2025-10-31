@@ -4,18 +4,23 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { toast } from "sonner";
+
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Field, FieldGroup, FieldSeparator, FieldDescription } from "@/components/ui/field";
+import { FieldGroup } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+
+import { useSettingStore } from "@/store/setting";
 
 const formSchema = z.object({
   name: z.string().min(2).max(50),
 });
 
 const ChangeProfileForm = () => {
+  const { loading, error, saveProfile } = useSettingStore();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -24,7 +29,16 @@ const ChangeProfileForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values.name);
+    await saveProfile({ name: values.name });
+
+    if (error) {
+      console.log(error);
+      return;
+    }
+
+    toast.info("New name profile is saved");
+
+    form.reset();
   };
 
   return (
@@ -45,7 +59,7 @@ const ChangeProfileForm = () => {
                     <FormItem>
                       <FormLabel>Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="Input your name" {...field} />
+                        <Input placeholder="Input your name" className="lg:w-1/2 w-full" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -54,7 +68,9 @@ const ChangeProfileForm = () => {
               </FieldGroup>
             </CardContent>
             <CardFooter>
-              <Button type="submit">Save changes</Button>
+              <Button type="submit" disabled={loading ? true : false}>
+                {loading ? "Loading..." : "Save changes"}
+              </Button>
             </CardFooter>
           </Card>
         </form>

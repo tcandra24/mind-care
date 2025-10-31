@@ -1,38 +1,54 @@
+import { update, changePassword } from "@/lib/actions/profile.action";
 import { create } from "zustand";
-import { getUser } from "@/lib/actions/auth.action";
+
+import { useAuthStore } from "@/store/auth";
 
 interface SettingState {
   loading: boolean;
+  error: string | null;
   saveProfile: (payload: { name: string }) => Promise<void>;
   changePassword: (payload: { oldPassword: string; newPassword: string }) => Promise<void>;
 }
 
-export const useMemoStore = create<SettingState>((set) => ({
+export const useSettingStore = create<SettingState>((set) => ({
   loading: false,
+  error: null,
   saveProfile: async ({ name }) => {
-    set({ loading: true });
+    set({ loading: true, error: null });
     try {
-      const response = await fetch(`/api/profile/change-profile`, {
-        method: "POST",
-        body: JSON.stringify({
-          name,
-        }),
-      });
-      const data = await response.json();
+      const response = await update({ name });
 
-      if (!data.success) {
-        throw new Error("Throw Error");
+      if (response) {
+        useAuthStore.getState().setUser({
+          id: response?.$id ?? "",
+          email: response?.email ?? "",
+          name: response?.name ?? "",
+          phone: response?.phone ?? "",
+        });
       }
-
-      // MAsuk Store
 
       set({ loading: false });
     } catch (error: any) {
-      return error.message;
+      set({
+        error: error.message,
+        loading: false,
+      });
     }
   },
 
-  changePassword: async (payload) => {
-    set({ loading: true });
+  changePassword: async ({ oldPassword, newPassword }) => {
+    set({ loading: true, error: null });
+    try {
+      const response = await changePassword({ oldPassword, newPassword });
+
+      console.log(response);
+
+      set({ loading: false });
+    } catch (error: any) {
+      set({
+        error: error.message,
+        loading: false,
+      });
+    }
   },
 }));

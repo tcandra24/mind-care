@@ -14,6 +14,7 @@ interface AuthState {
   loading: boolean;
   error: string | null;
   user: User;
+  setUser: (session: { id: string; email: string; name: string; phone: string }) => Promise<void>;
   login: (payload: { email: string; password: string }) => Promise<void>;
   logout: () => Promise<void>;
   register: (payload: { email: string; name: string; phone: string; password: string }) => Promise<void>;
@@ -21,7 +22,7 @@ interface AuthState {
 
 export const useAuthStore = create(
   persist<AuthState>(
-    (set) => ({
+    (set, get) => ({
       loading: false,
       error: null,
       user: {
@@ -30,10 +31,21 @@ export const useAuthStore = create(
         name: "",
         phone: "",
       },
+      setUser: async ({ id, email, name, phone }) => {
+        set({
+          user: {
+            id: id ?? "",
+            email: email ?? "",
+            name: name ?? "",
+            phone: phone ?? "",
+          },
+        });
+      },
       login: async (payload) => {
         set({ loading: true, error: null });
 
         try {
+          const { setUser } = get();
           const response = await loginUser({
             email: payload.email,
             password: payload.password,
@@ -42,16 +54,17 @@ export const useAuthStore = create(
           if (response) {
             const session = await getUser();
 
-            set({
-              user: {
-                id: session?.$id ?? "",
-                email: session?.email ?? "",
-                name: session?.name ?? "",
-                phone: session?.phone ?? "",
-              },
-              loading: false,
+            setUser({
+              id: session?.$id ?? "",
+              email: session?.email ?? "",
+              name: session?.name ?? "",
+              phone: session?.phone ?? "",
             });
           }
+
+          set({
+            loading: false,
+          });
         } catch (error: any) {
           set({
             error: error.message,

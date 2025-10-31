@@ -1,6 +1,7 @@
 "use server";
 
 import { createAppwriteClient } from "@/lib/appwrite";
+import { cookies } from "next/headers";
 
 interface UpdateProfile {
   name: string;
@@ -12,8 +13,11 @@ interface ChangePassword {
 }
 
 export const update = async (formData: UpdateProfile) => {
+  const cookieStore = await cookies();
+  const session = cookieStore.get("appwrite-mind-care-session")?.value ?? "";
+
   const { name } = formData;
-  const { account } = createAppwriteClient();
+  const { account } = createAppwriteClient(session);
 
   const result = await account.updateName(name);
 
@@ -21,12 +25,12 @@ export const update = async (formData: UpdateProfile) => {
 };
 
 export const changePassword = async (formData: ChangePassword) => {
+  const cookieStore = await cookies();
+  const session = cookieStore.get("appwrite-mind-care-session")?.value ?? "";
+
   const { oldPassword, newPassword } = formData;
-  const { account } = createAppwriteClient();
-  const result = await account.updatePassword(
-    newPassword, // password
-    oldPassword // oldPassword (optional)
-  );
+  const { account } = createAppwriteClient(session);
+  const result = await account.updatePassword(newPassword, oldPassword);
 
   return result;
 };
