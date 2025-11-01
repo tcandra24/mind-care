@@ -10,6 +10,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { FieldGroup, FieldDescription } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 
+import { toast } from "sonner";
+
 import BannerImg from "@/public/banner.svg";
 import IconPng from "@/public/icon.png";
 
@@ -37,9 +39,12 @@ const LoginForm = () => {
     await login({ email: values.email, password: values.password });
 
     if (error) {
-      console.log(error);
+      toast.error(error);
+      form.reset();
       return;
     }
+
+    toast.info("Login Successfull");
 
     redirect("/dashboard");
   };

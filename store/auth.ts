@@ -51,16 +51,18 @@ export const useAuthStore = create(
             password: payload.password,
           });
 
-          if (response) {
-            const session = await getUser();
-
-            setUser({
-              id: session?.$id ?? "",
-              email: session?.email ?? "",
-              name: session?.name ?? "",
-              phone: session?.phone ?? "",
-            });
+          if (!response.success) {
+            throw new Error(response.message);
           }
+
+          const session = await getUser();
+
+          setUser({
+            id: session?.$id ?? "",
+            email: session?.email ?? "",
+            name: session?.name ?? "",
+            phone: session?.phone ?? "",
+          });
 
           set({
             loading: false,
@@ -93,14 +95,17 @@ export const useAuthStore = create(
       },
       register: async (payload) => {
         set({ loading: true, error: null });
-
         try {
-          await registerUser({
+          const response = await registerUser({
             email: payload.email,
             name: payload.name,
             phone: payload.phone,
             password: payload.password,
           });
+
+          if (!response.success) {
+            throw new Error(response.message);
+          }
 
           set({
             loading: false,
