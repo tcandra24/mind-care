@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { PhoneInput } from "@/components/ui/phone-input";
 
 import BannerImg from "@/public/banner.svg";
+import IconPng from "@/public/icon.png";
 
 import { redirect } from "next/navigation";
 import Image from "next/image";
@@ -55,6 +56,7 @@ const RegisterForm = () => {
         <form onSubmit={form.handleSubmit(onSubmit)} className="p-6 md:p-8">
           <FieldGroup>
             <div className="flex flex-col items-center gap-2 text-center">
+              <Image src={IconPng} alt="logo-mind-care" width={40} height={40} />
               <h1 className="text-2xl font-bold">Get ready to join community</h1>
               <p className="text-muted-foreground text-balance">Register to your Mind Care account</p>
             </div>

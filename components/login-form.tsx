@@ -7,10 +7,11 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Field, FieldGroup, FieldSeparator, FieldDescription } from "@/components/ui/field";
+import { FieldGroup, FieldDescription } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 
 import BannerImg from "@/public/banner.svg";
+import IconPng from "@/public/icon.png";
 
 import { redirect } from "next/navigation";
 import Image from "next/image";
@@ -49,6 +50,7 @@ const LoginForm = () => {
         <form onSubmit={form.handleSubmit(onSubmit)} className="p-6 md:p-8">
           <FieldGroup>
             <div className="flex flex-col items-center gap-2 text-center">
+              <Image src={IconPng} alt="logo-mind-care" width={40} height={40} />
               <h1 className="text-2xl font-bold">Welcome back</h1>
               <p className="text-muted-foreground text-balance">Login to your Mind Care account</p>
             </div>
