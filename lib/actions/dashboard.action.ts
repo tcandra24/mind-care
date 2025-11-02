@@ -26,9 +26,7 @@ export const fetch = async (userId: string) => {
       query.orderAsc("$createdAt"),
     ]);
 
-    // console.log(memos.documents);
-
-    const graph = memos.documents.reduce((acc: MoodCount[], item: MemoItem) => {
+    const graph = memos.documents.reduce((acc, item) => {
       const date = item.$createdAt.split("T")[0];
       const existing = acc.find((entry) => entry.date === date);
 
@@ -45,7 +43,7 @@ export const fetch = async (userId: string) => {
       }
 
       return acc;
-    }, []);
+    }, [] as MoodCount[]);
 
     return graph;
   } catch (error: any) {
