@@ -1,9 +1,9 @@
 "use client";
 
-import { Bot } from "lucide-react";
+import { Bot, CircleOff } from "lucide-react";
 
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Spinner } from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";
@@ -64,6 +64,15 @@ export default function Moods() {
           <Spinner className="size-8 mx-auto my-8" />
         </div>
       )}
+      {!loading && memos.length < 1 && (
+        <div className="w-full flex justify-center">
+          <div className="flex flex-col gap-5 h-64 w-80 mt-10">
+            <CircleOff className="text-gray-300 self-center" size={50} />
+            <p className="text-gray-400 text-center">Memo is Empty. Please click the "create" button on the top right corner to create a memo.</p>
+          </div>
+        </div>
+      )}
+
       <div className="w-full grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 gap-4">
         {!loading &&
           memos.map((memo, index) => (

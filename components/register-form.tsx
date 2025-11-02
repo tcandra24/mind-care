@@ -29,7 +29,7 @@ const formSchema = z.object({
 });
 
 const RegisterForm = () => {
-  const { error, loading, register } = useAuthStore();
+  const { loading, register } = useAuthStore();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -42,14 +42,14 @@ const RegisterForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    await register({ email: values.email, name: values.name, phone: values.phone, password: values.password });
+    const { success, message } = await register({ email: values.email, name: values.name, phone: values.phone, password: values.password });
 
-    if (error) {
-      toast.error(error);
+    if (!success) {
+      toast.error(message);
       return;
     }
 
-    toast.info("Register Successfull");
+    toast.info(message);
 
     redirect("/auth/sign-in");
   };
@@ -113,7 +113,7 @@ const RegisterForm = () => {
                   </div>
 
                   <FormControl>
-                    <Input placeholder="Enter email address" {...field} type="password" />
+                    <Input placeholder="Enter password" {...field} type="password" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
