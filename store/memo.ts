@@ -12,6 +12,7 @@ interface Memo {
 
 interface MemoState {
   loading: boolean;
+  error: string | null;
   memos: Memo[];
   getData: (userId: string) => Promise<void>;
   store: (payload: { mood: string; note: string; user_id: string }) => Promise<void>;
@@ -19,9 +20,10 @@ interface MemoState {
 
 export const useMemoStore = create<MemoState>((set) => ({
   loading: false,
+  error: null,
   memos: [],
   getData: async (userId) => {
-    set({ loading: true, memos: [] });
+    set({ loading: true, error: null, memos: [] });
     try {
       const response = await fetch(`/api/tip?user_id=${userId}`, {
         method: "GET",
@@ -34,11 +36,14 @@ export const useMemoStore = create<MemoState>((set) => ({
 
       set({ loading: false, memos: data.response });
     } catch (error: any) {
-      return error.message;
+      set({
+        error: error.message,
+        loading: false,
+      });
     }
   },
   store: async ({ mood, note, user_id }) => {
-    set({ loading: true });
+    set({ loading: true, error: null });
     try {
       const response = await fetch("/api/tip", {
         method: "POST",
@@ -53,7 +58,10 @@ export const useMemoStore = create<MemoState>((set) => ({
 
       set({ loading: false });
     } catch (error: any) {
-      return error.message;
+      set({
+        error: error.message,
+        loading: false,
+      });
     }
   },
 }));

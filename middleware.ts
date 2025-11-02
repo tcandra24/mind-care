@@ -5,9 +5,16 @@ export function middleware(req: NextRequest) {
   const session = req.cookies.get("appwrite-mind-care-session");
   const url = req.nextUrl.clone();
 
-  const publicPath = ["/auth/sign-in", "/auth/sign-up"];
+  const publicPath = ["/auth/sign-in", "/auth/sign-up", "/"];
 
-  if (publicPath.some((path) => url.pathname.startsWith(path))) {
+  // Temporary
+  if (url.pathname === "/") {
+    url.pathname = "/dashboard";
+    return NextResponse.redirect(url);
+  }
+  // End Temporary
+
+  if (publicPath.some((path) => path === url.pathname)) {
     if (session) {
       url.pathname = "/dashboard";
       return NextResponse.redirect(url);

@@ -12,6 +12,8 @@ import { FieldGroup, FieldDescription } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { PhoneInput } from "@/components/ui/phone-input";
 
+import { toast } from "sonner";
+
 import BannerImg from "@/public/banner.svg";
 import IconPng from "@/public/icon.png";
 
@@ -43,9 +45,11 @@ const RegisterForm = () => {
     await register({ email: values.email, name: values.name, phone: values.phone, password: values.password });
 
     if (error) {
-      console.log(error);
+      toast.error(error);
       return;
     }
+
+    toast.info("Register Successfull");
 
     redirect("/auth/sign-in");
   };

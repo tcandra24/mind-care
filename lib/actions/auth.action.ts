@@ -28,9 +28,19 @@ export const registerUser = async (formData: CreateUser) => {
       password,
     });
 
-    return user;
+    if (!user) {
+      throw new Error("Error Registration Failed.");
+    }
+
+    return {
+      success: true,
+      user,
+    };
   } catch (error: any) {
-    return error.message;
+    return {
+      success: false,
+      message: error.message,
+    };
   }
 };
 
@@ -44,6 +54,10 @@ export const loginUser = async (formData: LoginUser) => {
       password,
     });
 
+    if (!session) {
+      throw new Error("Invalid credentials. Please check the email and password.");
+    }
+
     const cookieStore = await cookies();
     cookieStore.set("appwrite-mind-care-session", session.secret, {
       httpOnly: true,
@@ -52,9 +66,15 @@ export const loginUser = async (formData: LoginUser) => {
       sameSite: "lax",
     });
 
-    return session;
+    return {
+      success: true,
+      session,
+    };
   } catch (error: any) {
-    return error.message;
+    return {
+      success: false,
+      message: error.message,
+    };
   }
 };
 
