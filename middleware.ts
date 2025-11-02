@@ -7,6 +7,13 @@ export function middleware(req: NextRequest) {
 
   const publicPath = ["/auth/sign-in", "/auth/sign-up", "/"];
 
+  // Temporary
+  if (url.pathname === "/") {
+    url.pathname = "/dashboard";
+    return NextResponse.redirect(url);
+  }
+  // End Temporary
+
   if (publicPath.some((path) => path === url.pathname)) {
     if (session) {
       url.pathname = "/dashboard";
