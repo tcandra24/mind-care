@@ -4,6 +4,7 @@ import { Bot, CircleOff } from "lucide-react";
 
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Spinner } from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";
@@ -65,12 +66,20 @@ export default function Moods() {
         </div>
       )}
       {!loading && memos.length < 1 && (
-        <div className="w-full flex justify-center">
-          <div className="flex flex-col gap-5 h-64 w-80 mt-10">
-            <CircleOff className="text-gray-300 self-center" size={50} />
-            <p className="text-gray-400 text-center">Memo is Empty. Please click the "create" button on the top right corner to create a memo.</p>
-          </div>
-        </div>
+        <Empty>
+          <EmptyHeader>
+            <EmptyMedia>
+              <CircleOff className="text-gray-300 self-center" size={50} />
+            </EmptyMedia>
+            <EmptyTitle>Memo is Empty</EmptyTitle>
+            <EmptyDescription>Create memo when you need to talk with us</EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>
+            <Link href={"/moods/create"}>
+              <Button size="sm">Create</Button>
+            </Link>
+          </EmptyContent>
+        </Empty>
       )}
 
       <div className="w-full grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 gap-4">
