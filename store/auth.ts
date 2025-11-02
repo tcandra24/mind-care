@@ -12,19 +12,17 @@ interface User {
 
 interface AuthState {
   loading: boolean;
-  error: string | null;
   user: User;
   setUser: (session: { id: string; email: string; name: string; phone: string }) => Promise<void>;
-  login: (payload: { email: string; password: string }) => Promise<void>;
+  login: (payload: { email: string; password: string }) => Promise<{ success: boolean; message: string }>;
   logout: () => Promise<void>;
-  register: (payload: { email: string; name: string; phone: string; password: string }) => Promise<void>;
+  register: (payload: { email: string; name: string; phone: string; password: string }) => Promise<{ success: boolean; message: string }>;
 }
 
 export const useAuthStore = create(
   persist<AuthState>(
     (set, get) => ({
       loading: false,
-      error: null,
       user: {
         id: "",
         email: "",
@@ -42,7 +40,7 @@ export const useAuthStore = create(
         });
       },
       login: async (payload) => {
-        set({ loading: true, error: null });
+        set({ loading: true });
 
         try {
           const { setUser } = get();
@@ -67,11 +65,20 @@ export const useAuthStore = create(
           set({
             loading: false,
           });
+
+          return {
+            success: true,
+            message: "Login Successfull",
+          };
         } catch (error: any) {
           set({
-            error: error.message,
             loading: false,
           });
+
+          return {
+            success: false,
+            message: error.message,
+          };
         }
       },
       logout: async () => {
@@ -88,13 +95,12 @@ export const useAuthStore = create(
           });
         } catch (error: any) {
           set({
-            error: error.message,
             loading: false,
           });
         }
       },
       register: async (payload) => {
-        set({ loading: true, error: null });
+        set({ loading: true });
         try {
           const response = await registerUser({
             email: payload.email,
@@ -110,16 +116,25 @@ export const useAuthStore = create(
           set({
             loading: false,
           });
+
+          return {
+            success: true,
+            message: "Register Successfull",
+          };
         } catch (error: any) {
           set({
-            error: error.message,
             loading: false,
           });
+
+          return {
+            success: false,
+            message: error.message,
+          };
         }
       },
     }),
     {
-      name: "mind_map_auth_session",
+      name: "mind_care_auth_session",
     }
   )
 );

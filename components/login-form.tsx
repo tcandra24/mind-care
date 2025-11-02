@@ -25,7 +25,7 @@ const formSchema = z.object({
 });
 
 const LoginForm = () => {
-  const { error, loading, login } = useAuthStore();
+  const { loading, login } = useAuthStore();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -36,15 +36,14 @@ const LoginForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    await login({ email: values.email, password: values.password });
+    const { success, message } = await login({ email: values.email, password: values.password });
 
-    if (error) {
-      toast.error(error);
-      form.reset();
+    if (!success) {
+      toast.error(message);
       return;
     }
 
-    toast.info("Login Successfull");
+    toast.info(message);
 
     redirect("/dashboard");
   };
@@ -56,7 +55,7 @@ const LoginForm = () => {
           <FieldGroup>
             <div className="flex flex-col items-center gap-2 text-center">
               <Image src={IconPng} alt="logo-mind-care" width={40} height={40} />
-              <h1 className="text-2xl font-bold">Welcome back</h1>
+              <h1 className="text-2xl font-bold">Welcome Friend</h1>
               <p className="text-muted-foreground text-balance">Login to your Mind Care account</p>
             </div>
             <FormField
