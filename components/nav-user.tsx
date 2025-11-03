@@ -7,7 +7,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { useTheme } from "next-themes";
+// import { useTheme } from "next-themes";
 
 import { useAuthStore } from "@/store/auth";
 
@@ -21,7 +21,7 @@ export function NavUser({
   };
 }) {
   const { logout: logoutSession } = useAuthStore();
-  const { setTheme, theme } = useTheme();
+  // const { setTheme, theme } = useTheme();
 
   const logout = async () => {
     await logoutSession();
@@ -83,7 +83,7 @@ export function NavUser({
               </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuGroup>
+            {/* <DropdownMenuGroup>
               <DropdownMenuItem onClick={() => setTheme("light")}>
                 <Sun />
                 Light
@@ -100,7 +100,7 @@ export function NavUser({
                 {theme && theme === "system" && <Check className="ml-2" />}
               </DropdownMenuItem>
             </DropdownMenuGroup>
-            <DropdownMenuSeparator />
+            <DropdownMenuSeparator /> */}
             <DropdownMenuItem onClick={logout}>
               <LogOut />
               Log out
