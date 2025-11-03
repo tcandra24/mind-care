@@ -2,6 +2,7 @@
 
 import { createAppwriteClient } from "@/lib/appwrite";
 import { GoogleGenAI } from "@google/genai";
+// import { cookies } from "next/headers";
 import { ID } from "node-appwrite";
 
 interface CreateMood {
@@ -12,7 +13,14 @@ interface CreateMood {
 
 export const fetch = async (userId: string) => {
   try {
+    // const cookieStore = await cookies();
+    // const session = cookieStore.get("appwrite-mind-care-session")?.value ?? "";
+
     const { databases, query } = createAppwriteClient();
+    // const { account } = createAppwriteClient(session);
+
+    // const activeSession = await account.getSession("current");
+    // console.log(activeSession);
 
     const memos = await databases.listDocuments(process.env.NEXT_APPWRITE_DB_ID!, "memos", [query.equal("user_id", userId)]);
 
@@ -57,6 +65,18 @@ export const store = async (formData: CreateMood) => {
     });
 
     return saveMemo;
+  } catch (error: any) {
+    return error.message;
+  }
+};
+
+export const destroy = async (id: string) => {
+  try {
+    const { databases } = createAppwriteClient();
+
+    const deleteMemo = await databases.deleteDocument(process.env.NEXT_APPWRITE_DB_ID!, "memos", id);
+
+    return deleteMemo;
   } catch (error: any) {
     return error.message;
   }

@@ -1,12 +1,13 @@
 "use client";
 
-import { BadgeCheck, ChevronsUpDown, LogOut } from "lucide-react";
+import { BadgeCheck, ChevronsUpDown, LogOut, Moon, Sun, Computer, Check } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { useTheme } from "next-themes";
 
 import { useAuthStore } from "@/store/auth";
 
@@ -20,6 +21,7 @@ export function NavUser({
   };
 }) {
   const { logout: logoutSession } = useAuthStore();
+  const { setTheme, theme } = useTheme();
 
   const logout = async () => {
     await logoutSession();
@@ -79,6 +81,24 @@ export function NavUser({
                   Account
                 </DropdownMenuItem>
               </Link>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuItem onClick={() => setTheme("light")}>
+                <Sun />
+                Light
+                {theme && theme === "light" && <Check className="ml-2" />}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTheme("dark")}>
+                <Moon />
+                Dark
+                {theme && theme === "dark" && <Check className="ml-2" />}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTheme("system")}>
+                <Computer />
+                System
+                {theme && theme === "system" && <Check className="ml-2" />}
+              </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={logout}>

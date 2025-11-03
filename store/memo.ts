@@ -16,6 +16,7 @@ interface MemoState {
   memos: Memo[];
   getData: (userId: string) => Promise<void>;
   store: (payload: { mood: string; note: string; user_id: string }) => Promise<void>;
+  destroy: (payload: string) => Promise<void>;
 }
 
 export const useMemoStore = create<MemoState>((set) => ({
@@ -57,6 +58,30 @@ export const useMemoStore = create<MemoState>((set) => ({
       await response.json();
 
       set({ loading: false });
+    } catch (error: any) {
+      set({
+        error: error.message,
+        loading: false,
+      });
+    }
+  },
+  destroy: async (payload) => {
+    set({ loading: true, error: null });
+
+    try {
+      const response = await fetch("/api/tip", {
+        method: "DELETE",
+        body: JSON.stringify({
+          id: payload,
+        }),
+      });
+
+      await response.json();
+
+      set((state) => ({
+        loading: false,
+        memos: state.memos.filter((element) => element.$id !== payload),
+      }));
     } catch (error: any) {
       set({
         error: error.message,

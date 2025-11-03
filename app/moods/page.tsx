@@ -1,10 +1,11 @@
 "use client";
 
-import { Bot, CircleOff } from "lucide-react";
+import { Bot, CircleOff, Trash } from "lucide-react";
 
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Spinner } from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";
@@ -19,10 +20,12 @@ import { getMoodColor, ucwords } from "@/lib/utils";
 
 export default function Moods() {
   const { user } = useAuthStore();
-  const { getData: getAllData, loading, memos } = useMemoStore();
+  const { getData: getAllData, loading, memos, destroy } = useMemoStore();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isConfirm, setIsConfirm] = useState<boolean>(false);
   const [sheetData, setSheetData] = useState<string>("");
+  const [idDelete, setIdDelete] = useState<string>("");
 
   const getData = async (id: string) => {
     await getAllData(id);
@@ -41,6 +44,17 @@ export default function Moods() {
   const handleOpenSheet = (tip_ai: string) => {
     setSheetData(tip_ai);
     setIsOpen(true);
+  };
+
+  const handleConfirmDelete = (id: string) => {
+    setIsConfirm(true);
+    setIdDelete(id);
+  };
+
+  const handleDelete = () => {
+    if (!idDelete) return;
+
+    destroy(idDelete);
   };
 
   useEffect(() => {
@@ -89,10 +103,15 @@ export default function Moods() {
               <CardHeader>
                 <CardTitle className="font-bold">{`Memo-${index + 1}`}</CardTitle>
                 <CardAction>
-                  <Button variant="secondary" onClick={() => handleOpenSheet(memo.tip_ai)}>
-                    <Bot />
-                    AI Answer
-                  </Button>
+                  <div className="flex gap-5">
+                    <Button variant="secondary" onClick={() => handleOpenSheet(memo.tip_ai)}>
+                      <Bot />
+                      AI Answer
+                    </Button>
+                    <Button variant="destructive" onClick={() => handleConfirmDelete(memo["$id"])}>
+                      <Trash />
+                    </Button>
+                  </div>
                 </CardAction>
               </CardHeader>
               <CardContent>
@@ -117,11 +136,27 @@ export default function Moods() {
                 <Bot /> AI Answer
               </SheetTitle>
               <ScrollArea className="h-[600px] italic">
-                <SheetDescription className="text-justify text-lg">{sheetData ?? "AI Answer will appear here."}</SheetDescription>
+                <SheetDescription className="text-justify text-lg">{sheetData ?? "No AI Answer."}</SheetDescription>
               </ScrollArea>
             </SheetHeader>
           </SheetContent>
         </Sheet>
+        <AlertDialog open={isConfirm} onOpenChange={setIsConfirm}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you to delete this memo?</AlertDialogTitle>
+              <AlertDialogDescription>This action cannot be undone. This will permanently delete your memo.</AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction asChild>
+                <Button variant="destructive" onClick={() => handleDelete()}>
+                  Delete
+                </Button>
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </div>
   );
