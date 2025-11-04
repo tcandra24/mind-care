@@ -18,10 +18,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          {children}
-          <Toaster position="top-center" />
-        </ThemeProvider>
+        {/* <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange> */}
+        {children}
+        <Toaster position="top-center" />
+        {/* </ThemeProvider> */}
       </body>
     </html>
   );
