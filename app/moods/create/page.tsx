@@ -70,6 +70,14 @@ export default function CreateMood() {
 
   useEffect(() => {
     setLetter(quotes[Math.floor(Math.random() * quotes.length)].text);
+
+    const intervalLetter = setInterval(() => {
+      setLetter(quotes[Math.floor(Math.random() * quotes.length)].text);
+    }, 5000);
+
+    return () => {
+      clearInterval(intervalLetter);
+    };
   }, []);
 
   return (
@@ -210,13 +218,17 @@ export default function CreateMood() {
             </Form>
           </CardContent>
         </Card>
-        <Card className="lg:w-2/5 w-full">
-          <CardHeader>
-            <CardTitle>Quote of The Day</CardTitle>
-            <CardDescription>This May Make You Strong Than Ever</CardDescription>
-          </CardHeader>
-          <CardContent className="italic text-center before:content-['-'] after:content-['-'] text-2xl font-medium mt-8">{letter}</CardContent>
-        </Card>
+        <div className="lg:w-2/5 w-full">
+          <Card>
+            <CardHeader>
+              <CardTitle>Quote of The Day</CardTitle>
+              <CardDescription>This May Make You Strong Than Ever</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="italic text-center before:content-['-'] after:content-['-'] text-2xl font-medium my-8">{letter}</p>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );
